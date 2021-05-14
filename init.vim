@@ -105,6 +105,10 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 " This is useful to ignore files in Telescope search result
 set wildignore+=.*,*/node_modules/*,_site,*/__pycache__/,*/venv/*,*/target/*,*/.vim$,\~$,*/.log,*/.aux,*/.cls,*/.aux,*/.bbl,*/.blg,*/.fls,*/.fdb*/,*/.toc,*/.out,*/.glo,*/.log,*/.ist,*/.fdb_latexmk
 
+" NERDTree setup
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-l> :call CocActionAsync('jumpDefinition')<CR>
+
 " Set python provider for coc.nvim
 let g:python3_host_prog = '/usr/bin/python3'
 let g:python_host_prog = '/usr/bin/python2'
