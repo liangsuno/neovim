@@ -142,7 +142,11 @@ noremap <leader>0 :CocCommand rest-client.request <cr>
 com! -nargs=1 -complete=dir Ncd NERDTree <args>
 
 nnoremap <leader>nn <cmd>NERDTree ~/<cr> " Change NERDTree root to home directory
-nnoremap <leader>nl <cmd>NERDTree ~/lab<cr>
+if has('win32')
+	nnoremap <leader>nl <cmd>NERDTree c:/lab<cr>
+else
+	nnoremap <leader>nl <cmd>NERDTree ~/lab<cr>
+endif
 
 nnoremap tk  :tabnext<CR>
 nnoremap tj  :tabprev<CR>
