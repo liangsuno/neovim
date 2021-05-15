@@ -33,6 +33,11 @@
 " Run nvim and run :PlugInstall
 "
 " Installation complete and you're good to go !
+"
+" Some useful commands:
+"
+" After editing init.vim, use this command to reload without having to exit neovim
+" :source %
 
 :set autoindent
 :set tabstop=4
@@ -109,6 +114,9 @@ set wildignore+=.*,*/node_modules/*,_site,*/__pycache__/,*/venv/*,*/target/*,*/.
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-l> :call CocActionAsync('jumpDefinition')<CR>
 
+nnoremap <C-S-t> :belowright split term://bash<CR>
+"map('n','<C-S-t>','<cmd>:belowright split term://bash<cr>')
+
 " Set python provider for coc.nvim
 let g:python3_host_prog = '/usr/bin/python3'
 let g:python_host_prog = '/usr/bin/python2'
@@ -128,3 +136,31 @@ noremap <leader>0 :CocCommand rest-client.request <cr>
 
 " Set colorscheme to gruvbox
 :colorscheme gruvbox
+
+"com! -nargs=1 -complete=dir Ncd NERDTree | cd <args> |NERDTreeCWD
+com! -nargs=1 -complete=dir Ncd NERDTree <args>
+
+nnoremap <leader>nn <cmd>NERDTree ~/<cr> " Change NERDTree root to home directory
+nnoremap <leader>nl <cmd>NERDTree ~/lab<cr>
+
+nnoremap tk  :tabnext<CR>
+nnoremap tj  :tabprev<CR>
+
+" Terminal
+" Map <Esc> to get out of Terminal mode
+" e.g. :belowright split term://bash
+if has('nvim')
+  tnoremap <Esc> <C-\><C-n>
+endif
+" This maps keys to switch window pane while in Terminal edit mode
+if has('nvim')
+  tnoremap <a-h> <c-\><c-n><c-w>h
+  tnoremap <a-j> <c-\><c-n><c-w>j
+  tnoremap <a-k> <c-\><c-n><c-w>k
+  tnoremap <a-l> <c-\><c-n><c-w>l
+endif
+" This maps keys to switch window pane while in Normal mode
+nnoremap <a-h> <c-w>h
+nnoremap <a-j> <c-w>j
+nnoremap <a-k> <c-w>k
+nnoremap <a-l> <c-w>l
