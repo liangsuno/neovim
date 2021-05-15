@@ -45,6 +45,7 @@
 :set smarttab
 :set softtabstop=4
 :set mouse=a
+:set splitbelow
 
 " Plugins will be downloaded under the specified directory.
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
