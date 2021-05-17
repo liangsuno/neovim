@@ -150,8 +150,10 @@ com! -nargs=1 -complete=dir Ncd NERDTree <args>
 nnoremap <leader>nn <cmd>NERDTree ~/<cr> " Change NERDTree root to home directory
 if has('win32')
 	nnoremap <leader>nl <cmd>NERDTree c:/lab<cr>
+	nnoremap <leader>nw <cmd>NERDTree c:/work/nvim<cr>
 else
 	nnoremap <leader>nl <cmd>NERDTree ~/lab<cr>
+	nnoremap <leader>nw <cmd>NERDTree ~/mnt/c/work/nvim<cr>
 endif
 
 nnoremap tk  :tabnext<CR>
