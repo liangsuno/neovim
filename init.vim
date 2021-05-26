@@ -94,6 +94,9 @@ Plug 'preservim/tagbar'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'vim-scripts/dbext.vim'
 "Plug 'octol/vim-cpp-enhanced-highlight'
+"
+" post install (yarn install | npm install) then load plugin only for editing supported files
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
