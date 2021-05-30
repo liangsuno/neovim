@@ -39,13 +39,25 @@
 " After editing init.vim, use this command to reload without having to exit neovim
 " :source %
 
-:set autoindent
-:set tabstop=4
-:set shiftwidth=4
-:set smarttab
-:set softtabstop=4
-:set mouse=a
-:set splitbelow
+set autoindent
+set guicursor=
+set nohlsearch
+set number
+set relativenumber
+set hidden
+set nowrap
+set noswapfile
+set nobackup
+set incsearch
+set scrolloff=8
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set smarttab
+set mouse=a
+set splitbelow
+"set colorcolumn=80 
+set signcolumn=yes
 
 " Plugins will be downloaded under the specified directory.
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
@@ -56,11 +68,11 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
 " If you are using Vim-Plug
 "Plug 'shaunsingh/moonlight.nvim'
-
 " Telescope
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'ThePrimeagen/harpoon'
 
 " NERDTree
 " Run :NERDTreeToggle to activate
@@ -97,6 +109,7 @@ Plug 'vim-scripts/dbext.vim'
 "
 " post install (yarn install | npm install) then load plugin only for editing supported files
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -145,7 +158,7 @@ noremap <leader>0 :CocCommand rest-client.request <cr>
 "command! -nargs=0 Nyancat2 call nyancat2#start()
 
 " Set colorscheme to gruvbox
-:colorscheme gruvbox
+:colorscheme solarized8
 
 "com! -nargs=1 -complete=dir Ncd NERDTree | cd <args> |NERDTreeCWD
 com! -nargs=1 -complete=dir Ncd NERDTree <args>
