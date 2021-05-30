@@ -112,6 +112,8 @@ Plug 'vim-scripts/dbext.vim'
 " post install (yarn install | npm install) then load plugin only for editing supported files
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
+" https://www.freecodecamp.org/news/how-to-search-project-wide-vim-ripgrep-ack/
+Plug 'mileszs/ack.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -120,6 +122,27 @@ call plug#end()
 " In NORMAL mode, type space bar to activate leader
 " e.g. <space> ff to activate Telescope
 let mapleader = "\<Space>"
+
+" ack.vim --- {{{
+" Use ripgrep for searching ⚡️
+" Options include:
+" --vimgrep -> Needed to parse the rg response properly for ack.vim
+" --type-not sql -> Avoid huge sql file dumps as it slows down the search
+" --smart-case -> Search case insensitive if all lowercase pattern, Search case sensitively otherwise
+let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
+" Auto close the Quickfix list after pressing '<enter>' on a list item
+let g:ack_autoclose = 1
+" Any empty ack search will search for the work the cursor is on
+let g:ack_use_cword_for_empty_search = 1
+" Don't jump to first match
+cnoreabbrev Ack Ack!
+" Maps <leader>/ so we're ready to type the search keyword
+nnoremap <Leader>/ :Ack!<Space>
+" }}}
+
+" Navigate quickfix list with ease
+nnoremap <silent> [q :cprevious<CR>
+nnoremap <silent> ]q :cnext<CR>
 
 " Telescope setup
 lua << EOF
@@ -220,10 +243,10 @@ endfunction
 command! ZoomToggle call s:ZoomToggle()
 nnoremap <silent> <C-A> :ZoomToggle<CR>
 
-augroup highlight_yank
-    autocmd!
-    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
-augroup END
+"augroup highlight_yank
+"    autocmd!
+"    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
+"augroup END
 
 augroup THE_PRIMEAGEN
     autocmd!
