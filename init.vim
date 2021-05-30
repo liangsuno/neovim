@@ -26,7 +26,7 @@
 " ==================
 " This file is init.vim.
 " To identify where to install this file, run this command in Neovim >> :echo stdpath('config')
-" 
+"
 " ===============
 " Install plugins
 " ===============
@@ -38,6 +38,7 @@
 "
 " After editing init.vim, use this command to reload without having to exit neovim
 " :source %
+" :so %
 
 set autoindent
 set guicursor=
@@ -56,7 +57,7 @@ set shiftwidth=4
 set smarttab
 set mouse=a
 set splitbelow
-"set colorcolumn=80 
+"set colorcolumn=80
 set signcolumn=yes
 
 " Plugins will be downloaded under the specified directory.
@@ -72,6 +73,7 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'ThePrimeagen/harpoon'
 
 " NERDTree
@@ -131,7 +133,17 @@ nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " This is useful to ignore files in Telescope search result
-set wildignore+=.*,*/node_modules/*,_site,*/__pycache__/,*/venv/*,*/target/*,*/.vim$,\~$,*/.log,*/.aux,*/.cls,*/.aux,*/.bbl,*/.blg,*/.fls,*/.fdb*/,*/.toc,*/.out,*/.glo,*/.log,*/.ist,*/.fdb_latexmk
+" Nice menu when typing `:find *.py`
+set wildmode=longest,list,full
+set wildmenu
+" Ignore files
+set wildignore+=*.pyc
+set wildignore+=*_build/*
+set wildignore+=**/coverage/*
+set wildignore+=**/node_modules/*
+set wildignore+=**/android/*
+set wildignore+=**/ios/*
+set wildignore+=**/.git/*
 
 " NERDTree setup
 nnoremap <C-t> :NERDTreeToggle<CR>
@@ -159,6 +171,7 @@ noremap <leader>0 :CocCommand rest-client.request <cr>
 
 " Set colorscheme to gruvbox
 :colorscheme solarized8
+":colorscheme gruvbox
 
 "com! -nargs=1 -complete=dir Ncd NERDTree | cd <args> |NERDTreeCWD
 com! -nargs=1 -complete=dir Ncd NERDTree <args>
@@ -206,3 +219,14 @@ function! s:ZoomToggle() abort
 endfunction
 command! ZoomToggle call s:ZoomToggle()
 nnoremap <silent> <C-A> :ZoomToggle<CR>
+
+augroup highlight_yank
+    autocmd!
+    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
+augroup END
+
+augroup THE_PRIMEAGEN
+    autocmd!
+    autocmd BufWritePre * %s/\s\+$//e
+    autocmd BufEnter,BufWinEnter,TabEnter *.rs :lua require'lsp_extensions'.inlay_hints{}
+augroup END
