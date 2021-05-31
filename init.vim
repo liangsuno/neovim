@@ -26,7 +26,7 @@
 " ==================
 " This file is init.vim.
 " To identify where to install this file, run this command in Neovim >> :echo stdpath('config')
-" 
+"
 " ===============
 " Install plugins
 " ===============
@@ -38,14 +38,27 @@
 "
 " After editing init.vim, use this command to reload without having to exit neovim
 " :source %
+" :so %
 
-:set autoindent
-:set tabstop=4
-:set shiftwidth=4
-:set smarttab
-:set softtabstop=4
-:set mouse=a
-:set splitbelow
+set autoindent
+set guicursor=
+set nohlsearch
+set number
+set relativenumber
+set hidden
+set nowrap
+set noswapfile
+set nobackup
+set incsearch
+set scrolloff=8
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set smarttab
+set mouse=a
+set splitbelow
+"set colorcolumn=80
+set signcolumn=yes
 
 " Plugins will be downloaded under the specified directory.
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
@@ -56,11 +69,12 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
 " If you are using Vim-Plug
 "Plug 'shaunsingh/moonlight.nvim'
-
 " Telescope
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
+Plug 'ThePrimeagen/harpoon'
 
 " NERDTree
 " Run :NERDTreeToggle to activate
@@ -94,6 +108,12 @@ Plug 'preservim/tagbar'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'vim-scripts/dbext.vim'
 "Plug 'octol/vim-cpp-enhanced-highlight'
+"
+" post install (yarn install | npm install) then load plugin only for editing supported files
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+
+" https://www.freecodecamp.org/news/how-to-search-project-wide-vim-ripgrep-ack/
+Plug 'mileszs/ack.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -102,6 +122,27 @@ call plug#end()
 " In NORMAL mode, type space bar to activate leader
 " e.g. <space> ff to activate Telescope
 let mapleader = "\<Space>"
+
+" ack.vim --- {{{
+" Use ripgrep for searching ⚡️
+" Options include:
+" --vimgrep -> Needed to parse the rg response properly for ack.vim
+" --type-not sql -> Avoid huge sql file dumps as it slows down the search
+" --smart-case -> Search case insensitive if all lowercase pattern, Search case sensitively otherwise
+let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
+" Auto close the Quickfix list after pressing '<enter>' on a list item
+let g:ack_autoclose = 1
+" Any empty ack search will search for the work the cursor is on
+let g:ack_use_cword_for_empty_search = 1
+" Don't jump to first match
+cnoreabbrev Ack Ack!
+" Maps <leader>/ so we're ready to type the search keyword
+nnoremap <Leader>/ :Ack!<Space>
+" }}}
+
+" Navigate quickfix list with ease
+nnoremap <silent> [q :cprevious<CR>
+nnoremap <silent> ]q :cnext<CR>
 
 " Telescope setup
 lua << EOF
@@ -115,7 +156,17 @@ nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " This is useful to ignore files in Telescope search result
-set wildignore+=.*,*/node_modules/*,_site,*/__pycache__/,*/venv/*,*/target/*,*/.vim$,\~$,*/.log,*/.aux,*/.cls,*/.aux,*/.bbl,*/.blg,*/.fls,*/.fdb*/,*/.toc,*/.out,*/.glo,*/.log,*/.ist,*/.fdb_latexmk
+" Nice menu when typing `:find *.py`
+set wildmode=longest,list,full
+set wildmenu
+" Ignore files
+set wildignore+=*.pyc
+set wildignore+=*_build/*
+set wildignore+=**/coverage/*
+set wildignore+=**/node_modules/*
+set wildignore+=**/android/*
+set wildignore+=**/ios/*
+set wildignore+=**/.git/*
 
 " NERDTree setup
 nnoremap <C-t> :NERDTreeToggle<CR>
@@ -142,7 +193,8 @@ noremap <leader>0 :CocCommand rest-client.request <cr>
 "command! -nargs=0 Nyancat2 call nyancat2#start()
 
 " Set colorscheme to gruvbox
-:colorscheme gruvbox
+:colorscheme solarized8
+":colorscheme gruvbox
 
 "com! -nargs=1 -complete=dir Ncd NERDTree | cd <args> |NERDTreeCWD
 com! -nargs=1 -complete=dir Ncd NERDTree <args>
@@ -192,3 +244,14 @@ function! s:ZoomToggle() abort
 endfunction
 command! ZoomToggle call s:ZoomToggle()
 nnoremap <silent> <C-A> :ZoomToggle<CR>
+
+"augroup highlight_yank
+"    autocmd!
+"    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
+"augroup END
+
+augroup THE_PRIMEAGEN
+    autocmd!
+    autocmd BufWritePre * %s/\s\+$//e
+    autocmd BufEnter,BufWinEnter,TabEnter *.rs :lua require'lsp_extensions'.inlay_hints{}
+augroup END
