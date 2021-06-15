@@ -201,10 +201,16 @@ com! -nargs=1 -complete=dir Ncd NERDTree <args>
 
 nnoremap <leader>nn <cmd>NERDTree ~/<cr> " Change NERDTree root to home directory
 if has('win32')
-	nnoremap <leader>nl <cmd>NERDTree c:/lab<cr>
-	nnoremap <leader>nw <cmd>NERDTree c:/work/nvim<cr>
+	let $homedir = $HOMEDRIVE."\\".$HOMEPATH
+	nnoremap <leader><space>w <cmd>NERDTree c:\work\nvim<cr>
+	nnoremap <leader><space>l <cmd>NERDTree c:\lab<cr>
+	nnoremap <leader><space>a <cmd>NERDTree $homedir\.aws<cr>
+	nnoremap <leader><space>k <cmd>NERDTree $homedir\.kube<cr>
+	nnoremap <leader><space>o <cmd>NERDTree $homedir\.okta<cr>
+	nnoremap <leader><space>n <cmd>NERDTree $homedir\AppData\Local\nvim<cr>
 else
 	nnoremap <leader>nl <cmd>NERDTree ~/lab<cr>
+	nnoremap <leader>nk <cmd>NERDTree ~/lab<cr>
 	nnoremap <leader>nw <cmd>NERDTree ~/mnt/c/work/nvim<cr>
 endif
 
